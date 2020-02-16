@@ -11,7 +11,7 @@ class Property:
 
     def __str__(self):
         return (f'Property: {self.name} \n'
-                f'Owned: {self.owner} \n'
+                f'Owner: {self.owner} \n'
                 f'Mortgaged: {self.mortgaged}')
 
 
@@ -51,7 +51,7 @@ class Street(Property):
                 f'Color: {self.color} \n' \
                 f'Houses: {self.houses} \n' \
                 f'Hotel: {self.hotel} \n' \
-                f'Owned: {self.owner} \n' \
+                f'Owner: {self.owner} \n' \
                 f'Mortgaged: {self.mortgaged}')
 
 
@@ -66,7 +66,7 @@ class RailRoad(Property):
         self.count = 0
 
         for owner in self.rr_owners:
-            if owner == self.owner:
+            if owner.name == self.owner:
                 self.count += 1
 
         return 25 * 2**(self.count - 1)  # Formula for 25, 50, 100, 200
@@ -125,44 +125,47 @@ class Go:
 
 class FreeParking:
     def __init__(self):
-        self.name = FreeParking
+        self.name = 'Free Parking'
         self.money = 0
 
 
-def setup():
-    board = {}
+class GoToJail:
+    def __init__(self):
+        self.name = 'Go to Jail'
 
-    properties_df = pd.read_excel('Properties_Data.xlsx')
-    for i in range(len(properties_df)):
-        curr = properties_df.loc[i]
-        board[curr['position']] = Street(curr['name'], curr['color'],
-                                           curr['cost'], curr['base_rent'],
-                                           curr['upgrade_cost'],
-                                           curr['rent1'],curr['rent2'],
-                                           curr['rent3'], curr['rent4'],
-                                           curr['rent5'])
 
-    board[5] = RailRoad('Reading Railroad')
-    board[15] = RailRoad('Pennsylvania Railroad')
-    board[25] = RailRoad('B. & O. Railroad')
-    board[35] = RailRoad('Short Line Railroad')
+board = {}
 
-    board[12] = Utility('Electric Company')
-    board[28] = Utility('Water Works')
+properties_df = pd.read_excel('Properties_Data.xlsx')
+for i in range(len(properties_df)):
+    curr = properties_df.loc[i]
+    board[curr['position']] = Street(curr['name'], curr['color'],
+                                       curr['cost'], curr['base_rent'],
+                                       curr['upgrade_cost'],
+                                       curr['rent1'], curr['rent2'],
+                                       curr['rent3'], curr['rent4'],
+                                       curr['rent5'])
 
-    board[7] = Chance()
-    board[22] = Chance()
-    board[36] = Chance()
+board[5] = RailRoad('Reading Railroad')
+board[15] = RailRoad('Pennsylvania Railroad')
+board[25] = RailRoad('B. & O. Railroad')
+board[35] = RailRoad('Short Line Railroad')
 
-    board[2] = CommunityChest()
-    board[17] = CommunityChest()
-    board[33] = CommunityChest()
+board[12] = Utility('Electric Company')
+board[28] = Utility('Water Works')
 
-    board[4] = IncomeTax()
-    board[38] = LuxuryTax()
+board[7] = Chance()
+board[22] = Chance()
+board[36] = Chance()
 
-    board[0] = Go()
-    board[10] = Jail()
-    board[20] = FreeParking()
+board[2] = CommunityChest()
+board[17] = CommunityChest()
+board[33] = CommunityChest()
 
-    return board
+board[4] = IncomeTax()
+board[38] = LuxuryTax()
+
+board[0] = Go()
+board[10] = Jail()
+board[20] = FreeParking()
+board[30] = GoToJail()
