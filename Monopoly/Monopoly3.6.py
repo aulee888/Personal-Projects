@@ -1185,7 +1185,7 @@ def main():
     # bgpic accepts gif images only. Image size is 750x750
     wn = turtle.Screen()
     wn.setup(800, 800)
-    turtle.bgpic('/Users/austinlee/Documents/Programming/Monopoly/Board')
+    turtle.bgpic('/Users/austinlee/Documents/Python/Personal-Projects/Monopoly/Board.gif')
 
     # Use a make_player function to create player classes, designated only
     # by player.name
