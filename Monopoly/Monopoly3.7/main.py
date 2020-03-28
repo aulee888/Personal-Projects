@@ -1,5 +1,5 @@
 from player import Player
-from board import board
+from board import*
 
 players = []
 number_of_players = int(input('Enter number of players >>> '))
@@ -19,6 +19,7 @@ while len(players) > 1:
 
         player.move()
 
+        if player.position not in railroad_pos + utility_pos + community_chest_pos + tax_pos + other_pos
         if player.position not in [7, 22, 36, 2, 17, 33, 4, 38, 0, 10, 20, 30]:
             curr_loc = board[player.position]
 
