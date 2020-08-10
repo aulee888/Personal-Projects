@@ -19,7 +19,7 @@ while len(players) > 1:
 
         player.move()
 
-        if player.position not in railroad_pos + utility_pos + community_chest_pos + tax_pos + other_pos
+        # if player.position not in railroad_pos + utility_pos + community_chest_pos + tax_pos + other_pos
         if player.position not in [7, 22, 36, 2, 17, 33, 4, 38, 0, 10, 20, 30]:
             curr_loc = board[player.position]
 
@@ -32,8 +32,14 @@ while len(players) > 1:
             elif curr_loc.owner != player:
                 player.pay_rent()
 
+        action = input('Select Action:\n'
+                       '[1]\t Upgrade \n'
+                       '[2]\t Trade \n'
+                       '[3]\t End \n'
+                       '>>>\t ')
+
         # Offers option to upgrade any owned properties.
-        if player.owned:
+        if action == '1' and player.owned:
             print(player.owned)
             player.upgrade()
 

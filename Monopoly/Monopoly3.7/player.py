@@ -93,7 +93,7 @@ class Player:
             upgrades_to_buy = int(input('How many upgrades to buy? >>> '))
             cost = board[selection].upgrade_cost * upgrades_to_buy
 
-            if cost <= self.money:
+            if cost >= self.money:
 
                 # Info
                 print(f'{self.name} does not have enough money to buy {upgrades_to_buy} upgrades.')
@@ -106,5 +106,3 @@ class Player:
                 # Info
                 print(f'{self.name} bought {upgrades_to_buy} for ${cost}.')
                 print(f"{self.name}'s Money: {self.money} \n")
-
-
