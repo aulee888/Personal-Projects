@@ -1,5 +1,5 @@
 import random
-from board import board
+from board import board, railroads, utilities
 
 
 class Player:
@@ -13,12 +13,23 @@ class Player:
 
     def print_owned(self):
         # Formatting and Info
-        print(f"{'Number':<8}{'Property Name':<19}")
-        print('-'*7, '-'*19)  # Should be -1 from below formatting
+        print(f"{'Number':<8}{'Property Name':<20}{'Type':<10}{'Houses':<7}")
+        print('-'*7, '-'*19, '-'*9, '-'*7)  # Should be -1 from below formatting
 
-        for prop in self.owned:
+        # -- TO DO -- #
+        # Need to sort the self.owned list by color and then by number
+        for prop in sorted(self.owned):
             number_for_selection = f'[{prop}]'
-            print(f'{number_for_selection:<8}{board[prop].name:<19}')
+            house_or_hotel = 'Hotel' if board[prop].hotel else board[prop].houses
+
+            if prop not in railroads + utilities:
+                print(f"{number_for_selection:<8}{board[prop].name:<20}{board[prop].color:<10}{house_or_hotel:>7}")
+
+            elif prop in railroads:
+                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Railroad':<10}")
+
+            else:
+                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Utility':<10}")
 
         print('')  # End all print sections with new line
 
@@ -81,6 +92,9 @@ class Player:
         print(f"{self.name}'s Money: {self.money} \n")
 
     def upgrade(self):
+        # -- TO DO -- #
+        # Need to add houses back into circulation if upgrading to a hotel
+
         # Info
         print(f"{self.name}'s Money: {self.money}")
 

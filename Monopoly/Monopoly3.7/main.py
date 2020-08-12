@@ -24,8 +24,7 @@ while len(players) > 1:
 
         player.move()
 
-        # if player.position not in railroad_pos + utility_pos + community_chest_pos + tax_pos + other_pos
-        if player.position not in [7, 22, 36, 2, 17, 33, 4, 38, 0, 10, 20, 30]:
+        if player.position not in chances + community_chests + taxes + misc_pos:  # These parts are still in development
             curr_loc = board[player.position]
 
             # If property is not owned, option to buy.
@@ -40,7 +39,7 @@ while len(players) > 1:
         if player.owned:
             player.print_owned()
 
-        ## TO DO ##
+        # -- TO DO -- #
         # Show only options that are available
         # e.g. No upgrade or trade option when a player doesn't have property
         action = input('Select Action:\n'
@@ -52,7 +51,6 @@ while len(players) > 1:
 
         # Offers option to upgrade any owned properties.
         if action == '1' and player.owned:
-            print(player.owned)
             player.upgrade()
 
         if player.money <= 0:

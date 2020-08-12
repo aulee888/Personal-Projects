@@ -28,8 +28,8 @@ class Street(Property):
         self.rent3 = rent3
         self.rent4 = rent4
         self.rent5 = rent5
-        self.houses = 0
-        self.hotel = 0
+        self.houses = 0  # Integer ranging 0 - 4
+        self.hotel = False
 
     def get_rent(self):
         if self.hotel == 1:
@@ -146,30 +146,31 @@ for i in range(len(properties_df)):
                                        curr['rent3'], curr['rent4'],
                                        curr['rent5'])
 
-railroad_pos = [5, 15, 25, 35]
+railroads = [5, 15, 25, 35]
 board[5] = RailRoad('Reading Railroad')
 board[15] = RailRoad('Pennsylvania Railroad')
 board[25] = RailRoad('B. & O. Railroad')
 board[35] = RailRoad('Short Line Railroad')
 
-utility_pos = [12, 28]
+utilities = [12, 28]
 board[12] = Utility('Electric Company')
 board[28] = Utility('Water Works')
 
-chance_pos = [7, 22, 36]
+chances = [7, 22, 36]
 board[7] = Chance()
 board[22] = Chance()
 board[36] = Chance()
 
-community_chest_pos = [2, 17, 33]
+community_chests = [2, 17, 33]
 board[2] = CommunityChest()
 board[17] = CommunityChest()
 board[33] = CommunityChest()
 
-tax_pos = [4, 38]
+taxes = [4, 38]
 board[4] = IncomeTax()
 board[38] = LuxuryTax()
 
+misc_pos = [0, 10, 20, 30]
 board[0] = Go()
 board[10] = Jail()
 board[20] = FreeParking()
