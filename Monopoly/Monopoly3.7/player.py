@@ -20,31 +20,42 @@ class Player:
         # Need to sort the self.owned list by color and then by number
         for prop in sorted(self.owned):
             number_for_selection = f'[{prop}]'
-            house_or_hotel = 'Hotel' if board[prop].hotel else board[prop].houses
 
             if prop not in railroads + utilities:
+                house_or_hotel = 'Hotel' if board[prop].hotel else board[prop].houses  # Shows that a hotel exists on prop if fully upgraded
                 print(f"{number_for_selection:<8}{board[prop].name:<20}{board[prop].color:<10}{house_or_hotel:>7}")
 
             elif prop in railroads:
-                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Railroad':<10}")
+                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Railroad':<10}{'N/A':>7}")
 
             else:
-                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Utility':<10}")
+                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Utility':<10}{'N/A':>7}")
 
         print('')  # End all print sections with new line
 
-    def move(self):
-        """Board must be imported to use this function.
+    def move(self, cheat=False):
+        """
+        Board must be imported to use this function.
         Function used to traverse across the board, simulates the dice rolls at
         the beginning of a player's turn.
         last_roll is used to calculate utility rent if landed on utility.
-        """
-        die1 = random.randint(1, 6)
-        die2 = random.randint(1, 6)
-        total = die1 + die2
 
-        self.last_roll = total
-        self.position += total
+        Cheat is used for testing purposes, allows the player to move a desired
+        location on the board.
+        """
+        if not cheat:
+            die1 = random.randint(1, 6)
+            die2 = random.randint(1, 6)
+            total = die1 + die2
+
+            self.last_roll = total
+            self.position += total
+
+        else:
+            die1 = die2 = total = 'Cheat'
+
+            self.last_roll = cheat
+            self.position = cheat
 
         # Info
         print(f"Roll: {die1} + {die2} = {total}!")

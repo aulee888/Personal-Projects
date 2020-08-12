@@ -1,5 +1,7 @@
 from player import Player
 from board import*
+
+
 # # For actually playing the game
 # players = []
 # number_of_players = int(input('Enter number of players >>> '))
@@ -12,7 +14,7 @@ from board import*
 # print('')
 
 
-# #  For testing purposes
+#  For testing purposes
 player_names = ['Austin', 'Thoann']  # Add more players here
 players = [Player(name) for name in player_names]
 
@@ -22,7 +24,17 @@ while len(players) > 1:
         # Info
         print(f"### {player.name}'s Turn ###")
 
-        player.move()
+        # Cheating is for testing properties and monitoring behavior
+        print('')
+
+        force = input('Cheat? [E / #]\n'
+                      '>>>\t')
+        print('')
+
+        if force.upper() in ['E', '']:  # Entering a blank skips to cheating
+            player.move()
+        else:
+            player.move(int(force))  # End of cheating section
 
         if player.position not in chances + community_chests + taxes + misc_pos:  # These parts are still in development
             curr_loc = board[player.position]
@@ -49,6 +61,8 @@ while len(players) > 1:
                        '[3]\t End \n'
                        '>>>\t ')
 
+        print('')  # Spacing after selecting an action for aesthetics
+
         # Offers option to upgrade any owned properties.
         if action == '1' and player.owned:
             player.upgrade()
@@ -56,4 +70,4 @@ while len(players) > 1:
         if player.money <= 0:
             players.remove(player)
 
-        print('-'*35)
+        print('-'*50)  # Line to show end of turn
