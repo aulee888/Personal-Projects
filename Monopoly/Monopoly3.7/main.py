@@ -1,15 +1,20 @@
 from player import Player
 from board import*
+# # For actually playing the game
+# players = []
+# number_of_players = int(input('Enter number of players >>> '))
+# print('')
+#
+# for i in range(1, number_of_players + 1):
+#     player_name = input(f"Enter Player {i}'s Name >>> ")
+#     players.append(Player(player_name))
+#
+# print('')
 
-players = []
-number_of_players = int(input('Enter number of players >>> '))
-print('')
 
-for i in range(1, number_of_players + 1):
-    player_name = input(f"Enter Player {i}'s Name >>> ")
-    players.append(Player(player_name))
-
-print('')
+# #  For testing purposes
+player_names = ['Austin', 'Thoann']  # Add more players here
+players = [Player(name) for name in player_names]
 
 while len(players) > 1:
     for player in players:
@@ -32,7 +37,14 @@ while len(players) > 1:
             elif curr_loc.owner != player:
                 player.pay_rent()
 
+        if player.owned:
+            player.print_owned()
+
+        ## TO DO ##
+        # Show only options that are available
+        # e.g. No upgrade or trade option when a player doesn't have property
         action = input('Select Action:\n'
+                       '--------------\n'
                        '[1]\t Upgrade \n'
                        '[2]\t Trade \n'
                        '[3]\t End \n'

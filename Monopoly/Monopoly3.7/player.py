@@ -11,6 +11,17 @@ class Player:
         self.last_roll = 0
         self.in_jail = False
 
+    def print_owned(self):
+        # Formatting and Info
+        print(f"{'Number':<8}{'Property Name':<19}")
+        print('-'*7, '-'*19)  # Should be -1 from below formatting
+
+        for prop in self.owned:
+            number_for_selection = f'[{prop}]'
+            print(f'{number_for_selection:<8}{board[prop].name:<19}')
+
+        print('')  # End all print sections with new line
+
     def move(self):
         """Board must be imported to use this function.
         Function used to traverse across the board, simulates the dice rolls at
@@ -44,10 +55,10 @@ class Player:
         curr_loc = board[self.position]
         option = input(f'Purchase {curr_loc.name} for ${curr_loc.cost}? >>> ')
 
-        if option.upper() not in ['Y', 'YES', 'N', 'NO']:
+        if option.upper() not in ['Y', 'YES', 'N', 'NO', '1', '2']:
             self.buy()
 
-        elif option.upper() in ['Y', 'YES']:
+        elif option.upper() in ['Y', 'YES', '1']:
             self.owned.append(self.position)
             self.money -= curr_loc.cost
             curr_loc.owner = self
@@ -76,13 +87,11 @@ class Player:
         selection = int(input('Upgrade which property? >>> '))
 
         if selection not in self.owned:
-
             # Info
             print(f'{self.name} does not own this property.')
             self.upgrade()
 
         elif selection in self.owned:
-
             # Info
             for i in range(board[selection].houses + 1, 6):
                 if i < 5:
