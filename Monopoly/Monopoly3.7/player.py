@@ -8,13 +8,15 @@ class Player:
         self.money = 1500
         self.owned = []
         self.position = 0
-        self.last_roll = 0
+        self.last_roll = 0  # Used for utility rent
         self.in_jail = False
 
     def print_owned(self):
-        # Formatting and Info
-        print(f"{'Number':<8}{'Property Name':<20}{'Type':<10}{'Houses':<7}")
-        print('-'*7, '-'*19, '-'*9, '-'*7)  # Should be -1 from below formatting
+        # Column Names and formatting
+        print(f"{'Number':<8}"
+              f"{'Property Name':<20}"
+              f"{'Type':<10}{'Houses':<7}")
+        print('-'*7, '-'*19, '-'*9, '-'*7)  # Should be -1 from above padding
 
         # -- TO DO -- #
         # Need to sort the self.owned list by color and then by number
@@ -23,13 +25,20 @@ class Player:
 
             if prop not in railroads + utilities:
                 house_or_hotel = 'Hotel' if board[prop].hotel else board[prop].houses  # Shows that a hotel exists on prop if fully upgraded
-                print(f"{number_for_selection:<8}{board[prop].name:<20}{board[prop].color:<10}{house_or_hotel:>7}")
+                prop_type = board[prop].color
 
             elif prop in railroads:
-                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Railroad':<10}{'N/A':>7}")
+                house_or_hotel = 'N/A'
+                prop_type = 'Railroad'
 
             else:
-                print(f"{number_for_selection:<8}{board[prop].name:<20}{'Utility':<10}{'N/A':>7}")
+                house_or_hotel = 'N/A'
+                prop_type = 'Utility'
+
+            print(f"{number_for_selection:<8}"
+                  f"{board[prop].name:<20}"
+                  f"{prop_type:<10}"
+                  f"{house_or_hotel:>7}")
 
         print('')  # End all print sections with new line
 
@@ -74,6 +83,10 @@ class Player:
 
     def buy(self):
         """Simulates purchasing property."""
+
+        # -- TO DO -- #
+        # Display the prop info such as rent/upgrade/color before purchase
+
         curr_loc = board[self.position]
         option = input(f'Purchase {curr_loc.name} for ${curr_loc.cost}? >>> ')
 
@@ -110,6 +123,7 @@ class Player:
         print(f"{self.name}'s Money: {self.money}")
 
         selection = int(input('Upgrade which property? >>> '))
+        print('')  # Spacing
 
         if selection not in self.owned:
             # Info
@@ -117,26 +131,56 @@ class Player:
             self.upgrade()
 
         elif selection in self.owned:
-            # Info
-            for i in range(board[selection].houses + 1, 6):
-                if i < 5:
-                    print(f'House {i}: ${board[selection].upgrade_cost * (i - board[selection].houses)}')
-                elif i == 5:
-                    print(f'Hotel: ${board[selection].upgrade_cost * (i - board[selection].houses)}')
+            # Column Names and formatting
+            print(f"{'Option':<8}"
+                  f"{'Description':<13}"
+                  f"{'Rent':<6}"
+                  f"{'Upgrade Cost':<14}")
+            print('-'*7, '-'*12, '-'*5, '-'*13)  # Lines; should be -1 from above padding
 
-            upgrades_to_buy = int(input('How many upgrades to buy? >>> '))
-            cost = board[selection].upgrade_cost * upgrades_to_buy
+            # Shows only available options
+            # i.e. if own 2 houses, shows only option buy house 3/4/hotel
+            for i in range(board[selection].houses + 1, 6):
+                number_for_selection = f'[{i}]'
+
+                if i < 5:
+                    description = f'House {i}'
+                else:
+                    description = 'Hotel'
+
+                # 4 houses must be purchased before a hotel can be bought
+                # One house upgrade costs the upgrade_cost based on prop color
+                # i.e. Brown upgrade cost is $50 >>> 2 houses costs $100
+                # To go from 2 houses to 3 houses costs $50
+                # 3 houses to 4 houses costs $50
+                # 4 houses to hotel costs $50
+                # Hence the strange math in the last print line
+                print(f"{number_for_selection:<8}"
+                      f"{description:<13}"
+                      f"{board[selection].rent[i]:>5}"
+                      f"{board[selection].upgrade_cost * (i - board[selection].houses):>13}")
+
+            print('')  # Spacing
+            upgrades_to_buy = int(input('Upgrade Option >>> '))
+            cost = board[selection].upgrade_cost * (upgrades_to_buy - board[selection].houses)
 
             if cost >= self.money:
 
                 # Info
-                print(f'{self.name} does not have enough money to buy {upgrades_to_buy} upgrades.')
+                print(f'{self.name} does not have enough money to buy this upgrade.')
                 self.upgrade()
 
             else:
-                board[selection].houses += upgrades_to_buy
-                self.money -= cost
+                if upgrades_to_buy == 5:
+                    board[selection].hotel = True
+                    self.money -= cost
+                    purchase = 'a hotel'
+
+                else:
+                    board[selection].houses += upgrades_to_buy
+                    self.money -= cost
+                    purchase = f'{upgrades_to_buy} house(s)'
 
                 # Info
-                print(f'{self.name} bought {upgrades_to_buy} for ${cost}.')
+                print(f'{self.name} bought {purchase} for ${cost}.')
                 print(f"{self.name}'s Money: {self.money} \n")

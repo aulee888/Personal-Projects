@@ -25,6 +25,7 @@ while len(players) > 1:
         print(f"### {player.name}'s Turn ###")
 
         # Cheating is for testing properties and monitoring behavior
+        # Enter an position number to move to that location on the board
         print('')
 
         force = input('Cheat? [E / #]\n'
@@ -70,4 +71,4 @@ while len(players) > 1:
         if player.money <= 0:
             players.remove(player)
 
-        print('-'*50)  # Line to show end of turn
+        print('-'*60)  # Line to show end of turn

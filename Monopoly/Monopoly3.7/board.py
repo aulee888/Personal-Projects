@@ -23,28 +23,16 @@ class Street(Property):
         self.cost = cost
         self.base_rent = base_rent
         self.upgrade_cost = upgrade_cost
-        self.rent1 = rent1
-        self.rent2 = rent2
-        self.rent3 = rent3
-        self.rent4 = rent4
-        self.rent5 = rent5
+        self.rent = [base_rent, rent1, rent2, rent3, rent4, rent5]
         self.houses = 0  # Integer ranging 0 - 4
         self.hotel = False
 
     def get_rent(self):
-        if self.hotel == 1:
-            return self.rent5
+        if self.hotel:
+            return self.rent[5]
 
-        if self.houses == 0:
-            return self.base_rent
-        elif self.houses == 1:
-            return self.rent1
-        elif self.houses == 2:
-            return self.rent2
-        elif self.houses == 3:
-            return self.rent3
-        elif self.houses == 4:
-            return self.rent4
+        else:
+            return self.rent[self.houses]
 
     def __str__(self):
         return (f'Property: {self.name} \n' \
