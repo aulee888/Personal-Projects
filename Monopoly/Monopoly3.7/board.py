@@ -95,6 +95,16 @@ class IncomeTax:
     def __init__(self):
         self.name = 'Income Tax'
 
+    def pay_income_tax(self, player):
+        if 0.10 * player.money > 200:
+            tax = 0.10 * player.money
+        else:
+            tax = 200
+
+        player.money -= tax
+        print(f'{player.name} pays ${tax} in taxes!')
+        print(f"{player.name}'s Money: {player.money}\n")
+
 
 class LuxuryTax:
     def __init__(self):

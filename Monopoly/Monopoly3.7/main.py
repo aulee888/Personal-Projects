@@ -49,6 +49,10 @@ while len(players) > 1:
             elif curr_loc.owner != player:
                 player.pay_rent()
 
+        elif player.position in taxes:
+            if player.position == 4:
+                IncomeTax().pay_income_tax(player)
+
         if player.owned:
             player.print_owned()
 
