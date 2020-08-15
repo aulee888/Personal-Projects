@@ -96,6 +96,12 @@ class IncomeTax:
         self.name = 'Income Tax'
 
     def pay_income_tax(self, player):
+        """
+        Player pays either 10% of the income, or flat $200
+        Whichever is greater
+        """
+        # -- TO DO -- #
+        # Need to add house rule where taxes go to Free Parking
         if 0.10 * player.money > 200:
             tax = 0.10 * player.money
         else:
@@ -110,6 +116,13 @@ class LuxuryTax:
     def __init__(self):
         self.name = 'Luxury Tax'
 
+    def pay_luxury_tax(self, player):
+        # -- TO DO -- #
+        # Need to add house rule where taxes go to Free Parking
+        player.money -= 75
+
+        print(f'{player.name} pays $75 in taxes!')
+        print(f"{player.name}'s Money: {player.money}\n")
 
 class Jail:
     def __init__(self):
@@ -134,7 +147,7 @@ class GoToJail:
 
 board = {}
 
-properties_df = pd.read_excel('Properties_Data.xlsx')
+properties_df = pd.read_excel('properties_data.xlsx')
 for i in range(len(properties_df)):
     curr = properties_df.loc[i]
     board[curr['position']] = Street(curr['name'], curr['color'],
