@@ -14,9 +14,9 @@ class Player:
     def print_owned(self):
         # Column Names and formatting
         print(f"{'Number':<8}"
-              f"{'Property Name':<20}"
+              f"{'Property Name':<23}"
               f"{'Type':<10}{'Houses':<7}")
-        print('-'*7, '-'*19, '-'*9, '-'*7)  # Should be -1 from above padding
+        print('-'*7, '-'*22, '-'*9, '-'*7)  # Should be -1 from above padding
 
         # -- TO DO -- #
         # Need to sort the self.owned list by color and then by number
@@ -36,7 +36,7 @@ class Player:
                 prop_type = 'Utility'
 
             print(f"{number_for_selection:<8}"
-                  f"{board[prop].name:<20}"
+                  f"{board[prop].name:<23}"
                   f"{prop_type:<10}"
                   f"{house_or_hotel:>7}")
 

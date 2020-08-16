@@ -124,6 +124,7 @@ class LuxuryTax:
         print(f'{player.name} pays $75 in taxes!')
         print(f"{player.name}'s Money: {player.money}\n")
 
+
 class Jail:
     def __init__(self):
         self.name = 'Jail'
