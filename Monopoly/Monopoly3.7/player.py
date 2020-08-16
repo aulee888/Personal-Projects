@@ -1,5 +1,5 @@
 import random
-from board import board, railroads, utilities
+from board import RailRoad, board, railroads, utilities
 
 
 class Player:
@@ -96,7 +96,10 @@ class Player:
         elif option.upper() in ['Y', 'YES', '1']:
             self.owned.append(self.position)
             self.money -= curr_loc.cost
-            curr_loc.owner = self
+            curr_loc.owner = self  # Points to player object instead of player.name; prevents case if >=2 players have the same name
+
+            if self.position in railroads:
+                curr_loc.rr_owners.append(self)  # Same idea as above
 
             # Info
             print(f'{self.name} buys {curr_loc.name} for ${curr_loc.cost}.')

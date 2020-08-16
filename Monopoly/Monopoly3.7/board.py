@@ -44,6 +44,8 @@ class Street(Property):
 
 
 class RailRoad(Property):
+    # Faster to search through a small list (max 4) of RRs than a potentially
+    # larger list of all properties owned by a player
     rr_owners = []
 
     def __init__(self, name):
@@ -54,7 +56,7 @@ class RailRoad(Property):
         self.count = 0
 
         for owner in self.rr_owners:
-            if owner.name == self.owner:
+            if owner == self.owner:
                 self.count += 1
 
         return 25 * 2**(self.count - 1)  # Formula for 25, 50, 100, 200
