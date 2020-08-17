@@ -69,7 +69,7 @@ class Utility(Property):
         super().__init__(name)
         self.cost = 150
 
-    def get_rent(self):
+    def get_rent(self, player):
         self.count = 0
 
         for owner in self.utility_owners:
@@ -77,10 +77,10 @@ class Utility(Property):
                 self.count += 1
 
         if self.count == 1:
-            return 4 * last_move
+            return 4 * player.last_roll
 
         elif self.count == 2:
-            return 10 * last_move
+            return 10 * player.last_roll
 
 
 class Chance:

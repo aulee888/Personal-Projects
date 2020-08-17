@@ -102,6 +102,9 @@ class Player:
             if self.position in railroads:
                 curr_loc.rr_owners.append(self)  # Same idea as above
 
+            if self.position in utilities:
+                curr_loc.utility_owners.append(self)  # Same idea as above
+
             # Info
             print(f'{self.name} buys {curr_loc.name} for ${curr_loc.cost}.')
             print(f"{self.name}'s Money: {self.money} \n")
@@ -110,7 +113,11 @@ class Player:
         """Pays the rent to the landlord of a property."""
         curr_loc = board[self.position]
         landlord = curr_loc.owner
-        rent = curr_loc.get_rent()
+
+        if self.position in utilities:
+            rent = curr_loc.get_rent(self)  # Rent rules for utilities are slightly different; need to incorporate last_move
+        else:
+            rent = curr_loc.get_rent()  # Every other prop not require last_move
 
         self.money -= rent
         landlord.money += rent
