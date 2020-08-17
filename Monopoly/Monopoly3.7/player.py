@@ -15,7 +15,8 @@ class Player:
         # Column Names and formatting
         print(f"{'Number':<8}"
               f"{'Property Name':<23}"
-              f"{'Type':<10}{'Houses':<7}")
+              f"{'Type':<10}"
+              f"{'Houses':<7}")
         print('-'*7, '-'*22, '-'*9, '-'*7)  # Should be -1 from above padding
 
         # -- TO DO -- #
