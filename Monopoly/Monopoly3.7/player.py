@@ -1,5 +1,5 @@
 import random
-from board import RailRoad, board, railroads, utilities
+from board import board, railroads, utilities
 
 
 class Player:
