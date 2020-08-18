@@ -63,6 +63,9 @@ while len(players) > 1:
             if player.position == 30:
                 GoToJail().go_to_jail(player)
 
+        elif player.position in chances:
+            Chance().chance(player)
+
         if player.owned:
             player.print_owned()
 

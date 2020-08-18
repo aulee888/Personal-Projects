@@ -1,5 +1,5 @@
 import pandas as pd
-from random import randint
+from random import randint, randrange
 # from community_chest import community_chest
 # from chance import chance
 
@@ -87,6 +87,112 @@ class Utility(Property):
 class Chance:
     def __init__(self):
         self.name = 'Chance'
+
+    def chance(self, player):
+        chance_df = pd.read_excel('chance_data.xlsx')
+
+        # card = chance_df.iloc[randrange(16)]
+        card = chance_df.iloc[13]
+        print(f"{player.name} drew [{card['number']}] {card['description']}!")
+
+        if card['function'] == 'advance':
+            self.advance(player, card['position'])
+        elif card['function'] == 'pay':
+            self.pay(player, card['amount'])
+
+    def advance(self, player, to_position):
+        if to_position == 'railroad':  # For move to nearest railroad chance
+            if player.position >= 35:
+                player.money += 200
+                player.position = 5
+
+            elif player.position < 5:
+                player.position = 5
+
+            elif player.position >= 25:
+                player.position = 35
+
+            elif player.position >= 15:
+                player.position = 25
+
+            elif player.position >= 5:
+                player.position = 15
+
+        elif to_position == 'utility':  # For move to nearest utility chance
+            if 12 <= player.position < 28:
+                player.position = 28
+
+            elif player.position >= 28:
+                player.money += 200
+                player.position = 12
+
+            else:
+                player.position = 12
+
+        elif to_position < 0:  # For move backwards chance
+            player.position += to_position
+
+        else:  # For advances to specific locations
+            if to_position == 10:
+                GoToJail().go_to_jail(player)
+
+            else:
+                print(to_position)
+                if player.position > to_position:
+                    player.money += 200
+
+                player.position = to_position
+
+        # Info
+        # This last section of advance() was copied from main.py
+        print(f"{player.name}'s Position: {player.position % 40} "
+              f"{board[player.position % 40].name}.")
+        print(f"{player.name}'s Money: {player.money} \n")
+
+        if player.position not in chances + community_chests + taxes + misc_pos:  # These parts are still in development
+            curr_loc = board[player.position]
+
+            # If property is not owned, option to buy.
+            # Made so you don't bankrupt yourself buying property.
+            if not curr_loc.owner and player.money > curr_loc.cost:
+                player.buy()
+
+            # Pay rent to landlord.
+            elif curr_loc.owner != player:
+                player.pay_rent()
+
+        elif player.position in taxes:
+            if player.position == 4:
+                IncomeTax().pay_income_tax(player)
+            else:
+                LuxuryTax().pay_luxury_tax(player)
+
+        elif player.position in misc_pos:
+            if player.position == 30:
+                GoToJail().go_to_jail(player)
+
+    def pay(self, player, amount):
+        if amount == 'players':
+            print('This is in development')
+            # from main import players
+            #
+            # for other_player in players:
+            #     if other_player != player:
+            #         print(player)
+            #         print(other_player)
+            #         player.money -= 50
+            #         other_player.money += 50
+            #
+            #         # Info
+            #         print(f"{player.name}'s Money: {player.money}")
+            #         print(f"{other_player.name}'s Money: {other_player.money}")
+
+        elif amount == 'upgrades':
+            print('This is in development')
+
+        else:
+            player.money += amount
+            print(f"{player.name}'s Money: {player.money} \n")
 
 
 class CommunityChest:
