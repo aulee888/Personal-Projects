@@ -1,4 +1,5 @@
 import pandas as pd
+from random import randint
 # from community_chest import community_chest
 # from chance import chance
 
@@ -131,6 +132,35 @@ class Jail:
     def __init__(self):
         self.name = 'Jail'
 
+    def jail_time(self, player):
+        if player.in_jail > 3:
+            player.in_jail = False
+            print(f"{player.name} finished their Jail Sentence! \n")
+
+            player.move()
+
+        elif player.in_jail >= 1:
+            print(f"{player.name} has spent {player.in_jail} turn(s) in jail! \n")
+            self.breakout(player)
+
+            if not player.in_jail:
+                player.move()  # This assumes the player broke out of jail
+            else:
+                player.in_jail += 1
+
+    def breakout(self, player):
+        die1 = randint(1, 6)
+        die2 = randint(1, 6)
+
+        if die1 == die2:
+            player.in_jail = False
+            msg = f"{player.name} breaks out of jail! \n"
+        else:
+            msg = f"{player.name} fails to break out of jail! \n"
+
+        print(f"{player.name} rolls {die1} & {die2}!")
+        print(msg)
+
 
 class Go:
     def __init__(self):
@@ -146,6 +176,12 @@ class FreeParking:
 class GoToJail:
     def __init__(self):
         self.name = 'Go to Jail'
+
+    def go_to_jail(self, player):
+        player.position = 10
+        player.in_jail = 1
+
+        print(f"{player.name} was sent to Jail! \n")
 
 
 board = {}

@@ -32,8 +32,12 @@ while len(players) > 1:
                       '>>>\t')
         print('')
 
-        if force.upper() in ['E', '']:  # Entering a blank skips to cheating
+        if force.upper() in ['E', ''] and not player.in_jail:  # Entering a blank skips to cheating
             player.move()
+
+        elif player.in_jail:
+            Jail().jail_time(player)
+
         else:
             player.move(int(force))  # End of cheating section
 
@@ -54,6 +58,10 @@ while len(players) > 1:
                 IncomeTax().pay_income_tax(player)
             else:
                 LuxuryTax().pay_luxury_tax(player)
+
+        elif player.position in misc_pos:
+            if player.position == 30:
+                GoToJail().go_to_jail(player)
 
         if player.owned:
             player.print_owned()
