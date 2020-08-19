@@ -92,7 +92,7 @@ class Chance:
         chance_df = pd.read_excel('chance_data.xlsx')
 
         # card = chance_df.iloc[randrange(16)]
-        card = chance_df.iloc[13]
+        card = chance_df.iloc[9]
         print(f"{player.name} drew [{card['number']}] {card['description']}!")
 
         if card['function'] == 'advance':
@@ -188,7 +188,21 @@ class Chance:
             #         print(f"{other_player.name}'s Money: {other_player.money}")
 
         elif amount == 'upgrades':
-            print('This is in development')
+            house_count = 0
+            hotel_count = 0
+
+            for prop in player.owned:
+                if prop not in railroads + utilities:
+                    house_count += board[prop].houses
+                    hotel_count += board[prop].hotel
+
+            general_repair_cost = 25 * house_count + 100 * hotel_count
+            player.money -= general_repair_cost
+
+            print(f"{player.name} owns {house_count} house(s).")
+            print(f"{player.name} owns {hotel_count} hotel(s).")
+            print(f"{player.name} pays (25 * {house_count}) + (100 * {hotel_count}) = ${general_repair_cost} in repairs!")
+            print(f"{player.name}'s Money: {player.money} \n")
 
         else:
             player.money += amount
