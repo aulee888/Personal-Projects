@@ -134,6 +134,10 @@ class Player:
         print(f"{self.name}'s Money: {self.money}")
 
         selection = int(input('Upgrade which property? >>> '))
+        if selection in railroads + utilities:
+            print('Railroads and Utilities upgrades cannot be purchased. \n')
+            self.upgrade()
+
         print('')  # Spacing
 
         if selection not in self.owned:
