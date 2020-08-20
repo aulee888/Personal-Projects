@@ -1,25 +1,12 @@
-from player import Player
 from board import*
+from player import PlayerCreation
 
 
-# # For actually playing the game
-# players = []
-# number_of_players = int(input('Enter number of players >>> '))
-# print('')
-#
-# for i in range(1, number_of_players + 1):
-#     player_name = input(f"Enter Player {i}'s Name >>> ")
-#     players.append(Player(player_name))
-#
-# print('')
+PlayerCreation().player_creation()
 
 
-#  For testing purposes
-player_names = ['Austin', 'Thoann']  # Add more players here
-players = [Player(name) for name in player_names]
-
-while len(players) > 1:
-    for player in players:
+while len(PlayerCreation().players) > 1:
+    for player in PlayerCreation().players:
 
         # Info
         print(f"### {player.name}'s Turn ###")
@@ -86,6 +73,6 @@ while len(players) > 1:
             player.upgrade()
 
         if player.money <= 0:
-            players.remove(player)
+            PlayerCreation().players.remove(player)
 
-        print('-'*60)  # Line to show end of turn
+        print('-'*70)  # Line to show end of turn

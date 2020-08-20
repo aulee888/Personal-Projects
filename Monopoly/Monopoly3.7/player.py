@@ -1,5 +1,26 @@
-import random
+from random import randint
 from board import board, railroads, utilities
+
+
+class PlayerCreation:
+    players = []
+
+    def player_creation(self):
+        # # For actually playing the game
+        # players = []
+        # number_of_players = int(input('Enter number of players >>> '))
+        # print('')
+        #
+        # for i in range(1, number_of_players + 1):
+        #     player_name = input(f"Enter Player {i}'s Name >>> ")
+        #     players.append(Player(player_name))
+        #
+        # print('')
+
+        #  For testing purposes
+        player_names = ['Austin', 'Thoann', 'Ben']  # Add more players here
+        for player in player_names:
+            self.players.append(Player(player))
 
 
 class Player:
@@ -54,8 +75,8 @@ class Player:
         location on the board.
         """
         if not cheat:
-            die1 = random.randint(1, 6)
-            die2 = random.randint(1, 6)
+            die1 = randint(1, 6)
+            die2 = randint(1, 6)
             total = die1 + die2
 
             self.last_roll = total

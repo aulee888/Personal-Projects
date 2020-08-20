@@ -1,7 +1,6 @@
 import pandas as pd
 from random import randint, randrange
 # from community_chest import community_chest
-# from chance import chance
 
 
 class Property:
@@ -90,9 +89,7 @@ class Chance:
 
     def chance(self, player):
         chance_df = pd.read_excel('chance_data.xlsx')
-
-        # card = chance_df.iloc[randrange(16)]
-        card = chance_df.iloc[9]
+        card = chance_df.iloc[randrange(16)]
         print(f"{player.name} drew [{card['number']}] {card['description']}!")
 
         if card['function'] == 'advance':
@@ -172,20 +169,21 @@ class Chance:
                 GoToJail().go_to_jail(player)
 
     def pay(self, player, amount):
+        from player import PlayerCreation
+
         if amount == 'players':
-            print('This is in development')
-            # from main import players
-            #
-            # for other_player in players:
-            #     if other_player != player:
-            #         print(player)
-            #         print(other_player)
-            #         player.money -= 50
-            #         other_player.money += 50
-            #
-            #         # Info
-            #         print(f"{player.name}'s Money: {player.money}")
-            #         print(f"{other_player.name}'s Money: {other_player.money}")
+            # Info
+            print(f"{player.name} pays out ${(len(PlayerCreation().players) - 1) * 50}! \n")
+
+            for other_player in PlayerCreation().players:
+                if other_player != player:
+                    player.money -= 50
+                    other_player.money += 50
+
+                    # Info
+                    print(f"{other_player.name}'s Money: {other_player.money}")
+
+            print(f"{player.name}'s Money: {player.money} \n")
 
         elif amount == 'upgrades':
             house_count = 0
@@ -345,3 +343,10 @@ board[0] = Go()
 board[10] = Jail()
 board[20] = FreeParking()
 board[30] = GoToJail()
+
+# Prevents circular import error.
+# Ensures that board, railroads, utilities, etc. variables are created.
+# That way player.py can import them w/o error.
+# Otherwise if import placed at top of script, player.py would try to import
+# variables that don't exist yet.
+from player import PlayerCreation
