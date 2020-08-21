@@ -120,6 +120,7 @@ class Chance:
                 player.position = 28
 
             elif player.position >= 28:
+                print(f'{player.name} passed GO! Collect $200! \n')
                 player.money += 200
                 player.position = 12
 
@@ -136,6 +137,7 @@ class Chance:
             else:
                 print(to_position)
                 if player.position > to_position:
+                    print(f'{player.name} passed GO! Collect $200! \n')
                     player.money += 200
 
                 player.position = to_position
