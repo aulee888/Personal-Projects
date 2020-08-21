@@ -59,18 +59,22 @@ while len(PlayerCreation().players) > 1:
         # -- TO DO -- #
         # Show only options that are available
         # e.g. No upgrade or trade option when a player doesn't have property
-        action = input('Select Action:\n'
-                       '--------------\n'
-                       '[1]\t Upgrade \n'
-                       '[2]\t Trade \n'
-                       '[3]\t End \n'
-                       '>>>\t ')
+        while True:
+            action = input('Select Action:\n'
+                           '--------------\n'
+                           '[1]\t Upgrade \n'
+                           '[2]\t Trade \n'
+                           '[3]\t End \n'
+                           '>>>\t ')
 
-        print('')  # Spacing after selecting an action for aesthetics
+            print('')  # Spacing after selecting an action for aesthetics
 
-        # Offers option to upgrade any owned properties.
-        if action == '1' and player.owned:
-            player.upgrade()
+            # Offers option to upgrade any owned properties.
+            if action == '1' and player.owned:
+                player.upgrade()
+
+            elif action == '3':
+                break
 
         if player.money <= 0:
             PlayerCreation().players.remove(player)
