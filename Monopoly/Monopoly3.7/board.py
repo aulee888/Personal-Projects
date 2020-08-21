@@ -76,11 +76,16 @@ class Utility(Property):
             if owner == self.owner:
                 self.count += 1
 
-        if self.count == 1:
-            return 4 * player.last_roll
+        if player.utility_chance_factor:
+            x10 = 10
+            player.utility_chance_factor = False
+        elif not player.utility_chance_factor:
+            x10 = 1
 
+        if self.count == 1:
+            return 4 * player.last_roll * x10
         elif self.count == 2:
-            return 10 * player.last_roll
+            return 10 * player.last_roll * x10
 
 
 class Chance:
@@ -90,6 +95,7 @@ class Chance:
     def chance(self, player):
         chance_df = pd.read_excel('chance_data.xlsx')
         card = chance_df.iloc[randrange(16)]
+        card = chance_df.iloc[3]
         print(f"{player.name} drew [{card['number']}] {card['description']}!")
 
         if card['function'] == 'advance':
@@ -116,6 +122,8 @@ class Chance:
                 player.position = 15
 
         elif to_position == 'utility':  # For move to nearest utility chance
+            player.utility_chance_factor = True
+
             if 12 <= player.position < 28:
                 player.position = 28
 
