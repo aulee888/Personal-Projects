@@ -344,7 +344,7 @@ board[10] = Jail()
 board[20] = FreeParking()
 board[30] = GoToJail()
 
-# Prevents circular import error.
+# Importing at the end prevents circular import error.
 # Ensures that board, railroads, utilities, etc. variables are created.
 # That way player.py can import them w/o error.
 # Otherwise if import placed at top of script, player.py would try to import
