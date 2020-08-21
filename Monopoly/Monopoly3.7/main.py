@@ -73,7 +73,7 @@ while len(PlayerCreation().players) > 1:
             if action == '1' and player.owned:
                 player.upgrade()
 
-            elif action == '3':
+            elif action in ['3', '']:
                 break
 
         if player.money <= 0:
