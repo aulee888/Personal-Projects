@@ -197,7 +197,17 @@ class Player:
                       f"{board[selection].upgrade_cost * (i - board[selection].houses):>13}")
 
             print('')  # Spacing
-            upgrades_to_buy = int(input('Upgrade Option >>> '))
+
+            while True:
+                # Prevents entering breaking values:
+                # i.e. More than 4 houses and a hotel
+                # i.e. A number of houses that currently exist on the prop
+                upgrades_to_buy = int(input('Upgrade Option >>> '))
+                if upgrades_to_buy <= board[selection].houses or upgrades_to_buy > 6:
+                    print('Select another option. \n')
+                else:
+                    break
+
             cost = board[selection].upgrade_cost * (upgrades_to_buy - board[selection].houses)
 
             if cost >= self.money:
