@@ -95,7 +95,6 @@ class Chance:
     def chance(self, player):
         chance_df = pd.read_excel('chance_data.xlsx')
         card = chance_df.iloc[randrange(16)]
-        card = chance_df.iloc[3]
         print(f"{player.name} drew [{card['number']}] {card['description']}!")
 
         if card['function'] == 'advance':
