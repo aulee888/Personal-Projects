@@ -228,7 +228,7 @@ class CommunityChest:
 
         if card['number'] == 0:  # Go to Jail card
             GoToJail().go_to_jail(player)
-        elif card['number'] == 2:  # Get Out of Jail Free card
+        elif card['number'] == 4:  # Get Out of Jail Free card
             print('This is still in development')
         elif card['function'] == 'pay':
             self.pay(player, card['amount'])
