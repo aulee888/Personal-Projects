@@ -53,6 +53,9 @@ while len(PlayerCreation().players) > 1:
         elif player.position in chances:
             Chance().chance(player)
 
+        elif player.position in community_chests:
+            CommunityChest().comm_chest(player)
+
         if player.owned:
             player.print_owned()
 

@@ -221,6 +221,57 @@ class CommunityChest:
     def __init__(self):
         self.name = 'Community Chest'
 
+    def comm_chest(self, player):
+        comm_df = pd.read_excel('comm_chest_data.xlsx')
+        card = comm_df.iloc[randrange(16)]
+        # card = comm_df.iloc[3]
+        print(f"{player.name} drew [{card['number']}] {card['description']}!")
+
+        if card['number'] == 0:  # Go to Jail card
+            GoToJail().go_to_jail(player)
+        elif card['number'] == 2:  # Get Out of Jail Free card
+            print('This is still in development')
+        elif card['function'] == 'pay':
+            self.pay(player, card['amount'])
+
+    def pay(self, player, amount):
+        from player import PlayerCreation
+
+        if amount == 'players':
+            # Info
+            print(f"{player.name} pays out ${(len(PlayerCreation().players) - 1) * 50}! \n")
+
+            for other_player in PlayerCreation().players:
+                if other_player != player:
+                    player.money -= 50
+                    other_player.money += 50
+
+                    # Info
+                    print(f"{other_player.name}'s Money: {other_player.money}")
+
+            print(f"{player.name}'s Money: {player.money} \n")
+
+        elif amount == 'upgrades':
+            house_count = 0
+            hotel_count = 0
+
+            for prop in player.owned:
+                if prop not in railroads + utilities:
+                    house_count += board[prop].houses
+                    hotel_count += board[prop].hotel
+
+            general_repair_cost = 40 * house_count + 115 * hotel_count
+            player.money -= general_repair_cost
+
+            print(f"{player.name} owns {house_count} house(s).")
+            print(f"{player.name} owns {hotel_count} hotel(s).")
+            print(f"{player.name} pays (25 * {house_count}) + (100 * {hotel_count}) = ${general_repair_cost} in repairs!")
+            print(f"{player.name}'s Money: {player.money} \n")
+
+        else:
+            player.money += amount
+            print(f"{player.name}'s Money: {player.money} \n")
+
 
 class IncomeTax:
     def __init__(self):
