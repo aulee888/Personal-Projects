@@ -319,10 +319,17 @@ class Jail:
 
         elif player.in_jail >= 1:
             print(f"{player.name} has spent {player.in_jail} turn(s) in jail! \n")
-            self.breakout(player)
+
+            bail = input('Pay $50 bail? >>> ')
+            if bail.upper() in ['Y', '1']:
+                player.in_jail = False
+                print(f"{player.name} pays bail to leave Jail!")
+                print(f"{player.name}'s Money: {player.money} \n")
+            else:
+                self.breakout(player)
 
             if not player.in_jail:
-                player.move()  # This assumes the player broke out of jail
+                player.move()  # This assumes the player broke out of jail or paid bail
             else:
                 player.in_jail += 1
 
