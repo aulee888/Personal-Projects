@@ -265,7 +265,7 @@ class CommunityChest:
 
             print(f"{player.name} owns {house_count} house(s).")
             print(f"{player.name} owns {hotel_count} hotel(s).")
-            print(f"{player.name} pays (25 * {house_count}) + (100 * {hotel_count}) = ${general_repair_cost} in repairs!")
+            print(f"{player.name} pays (40 * {house_count}) + (115 * {hotel_count}) = ${general_repair_cost} in repairs!")
             print(f"{player.name}'s Money: {player.money} \n")
 
         else:
