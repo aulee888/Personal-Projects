@@ -156,15 +156,19 @@ class Player:
         print(f"{self.name}'s Money: {self.money}")
 
         selection = int(input('Upgrade which property? >>> '))
-        if selection in railroads + utilities:
-            print('Railroads and Utilities upgrades cannot be purchased. \n')
-            self.upgrade()
-
         print('')  # Spacing
 
         if selection not in self.owned:
             # Info
-            print(f'{self.name} does not own this property.')
+            print(f'{self.name} does not own this property. \n')
+            self.upgrade()
+
+        if selection in railroads + utilities:
+            print('Railroads and Utilities upgrades cannot be purchased. \n')
+            self.upgrade()
+
+        elif not board[selection].monopoly():
+            print(f'{self.name} does not have a monopoly on {board[selection].color}! \n')
             self.upgrade()
 
         elif selection in self.owned:
