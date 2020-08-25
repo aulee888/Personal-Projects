@@ -28,11 +28,32 @@ class Street(Property):
         self.hotel = False
 
     def get_rent(self):
+        print(self.monopoly())
         if self.hotel:
             return self.rent[5]
-
         else:
-            return self.rent[self.houses]
+            if self.houses == 0 and self.monopoly():  # Double on unimproved monopolized lots
+                return 2 * self.rent[0]
+            else:
+                return self.rent[self.houses]
+
+    def monopoly(self):
+        # For determining how whether or not rent is doubled on unimproved lots
+        # Or determining whether or not player can buy houses/hotels
+        count = 0
+        for prop in self.owner.owned:
+            if board[prop].color == self.color:
+                count += 1
+
+        if self.color in ['Brown', 'Blue']:  # Need only two of each of these colors
+            threshold = 2
+        else:
+            threshold = 3
+
+        if count < threshold:
+            return False
+        else:
+            return True
 
     def __str__(self):
         return (f'Property: {self.name} \n' \
