@@ -170,7 +170,7 @@ class Player:
             if selection not in self.owned:
                 print(f'{self.name} does not own this property. \n')
             elif selection in railroads + utilities:
-                print('Railroads and Utilities upgrades cannot be purchased. \n')
+                print('Railroad and Utility upgrades cannot be purchased. \n')
             elif not board[selection].monopoly():
                 print(f'{self.name} does not have a monopoly on {board[selection].color}! \n')
             else:

@@ -42,8 +42,9 @@ class Street(Property):
         # Or determining whether or not player can buy houses/hotels
         count = 0
         for prop in self.owner.owned:
-            if board[prop].color == self.color:
-                count += 1
+            if prop not in railroads + utilities:
+                if board[prop].color == self.color:
+                    count += 1
 
         if self.color in ['Brown', 'Blue']:  # Need only two of each of these colors
             threshold = 2
