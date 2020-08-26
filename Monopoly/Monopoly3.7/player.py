@@ -18,7 +18,7 @@ class PlayerCreation:
         # print('')
 
         #  For testing purposes
-        player_names = ['Austin', 'Thoann', 'Ben']  # Add more players here
+        player_names = ['Austin', 'Thoann']  # Add more players here
         for player in player_names:
             self.players.append(Player(player))
 
@@ -111,25 +111,28 @@ class Player:
         # Display the prop info such as rent/upgrade/color before purchase
 
         curr_loc = board[self.position]
-        option = input(f'Purchase {curr_loc.name} for ${curr_loc.cost}? >>> ')
+        while True:
+            option = input(f'Purchase {curr_loc.name} for ${curr_loc.cost}? >>> ')
 
-        if option.upper() not in ['Y', 'YES', 'N', 'NO', '1', '2']:
-            self.buy()
+            if option.upper() in ['Y', 'YES', '1']:
+                self.owned.append(self.position)
+                self.money -= curr_loc.cost
+                curr_loc.owner = self  # Points to player object instead of player.name; prevents case if >=2 players have the same name
 
-        elif option.upper() in ['Y', 'YES', '1']:
-            self.owned.append(self.position)
-            self.money -= curr_loc.cost
-            curr_loc.owner = self  # Points to player object instead of player.name; prevents case if >=2 players have the same name
+                if self.position in railroads:
+                    curr_loc.rr_owners.append(self)  # Same idea as above
 
-            if self.position in railroads:
-                curr_loc.rr_owners.append(self)  # Same idea as above
+                if self.position in utilities:
+                    curr_loc.utility_owners.append(self)  # Same idea as above
 
-            if self.position in utilities:
-                curr_loc.utility_owners.append(self)  # Same idea as above
+                # Info
+                print(f'{self.name} buys {curr_loc.name} for ${curr_loc.cost}.')
+                print(f"{self.name}'s Money: {self.money} \n")
+                break
 
-            # Info
-            print(f'{self.name} buys {curr_loc.name} for ${curr_loc.cost}.')
-            print(f"{self.name}'s Money: {self.money} \n")
+            elif option.upper() in ['N', 'NO', '2']:
+                print('')
+                break
 
     def pay_rent(self):
         """Pays the rent to the landlord of a property."""
@@ -155,23 +158,26 @@ class Player:
         # Info
         print(f"{self.name}'s Money: {self.money}")
 
-        selection = int(input('Upgrade which property? >>> '))
-        print('')  # Spacing
+        while True:
+            selection = input('Upgrade which property? >>> ')
+            if selection.upper() in ['NO', 'N', 'E', '']:
+                upgrading = False
+                print('')
+                break
+            else:
+                selection = int(selection)
 
-        if selection not in self.owned:
-            # Info
-            print(f'{self.name} does not own this property. \n')
-            self.upgrade()
+            if selection not in self.owned:
+                print(f'{self.name} does not own this property. \n')
+            elif selection in railroads + utilities:
+                print('Railroads and Utilities upgrades cannot be purchased. \n')
+            elif not board[selection].monopoly():
+                print(f'{self.name} does not have a monopoly on {board[selection].color}! \n')
+            else:
+                upgrading = True
+                break
 
-        if selection in railroads + utilities:
-            print('Railroads and Utilities upgrades cannot be purchased. \n')
-            self.upgrade()
-
-        elif not board[selection].monopoly():
-            print(f'{self.name} does not have a monopoly on {board[selection].color}! \n')
-            self.upgrade()
-
-        elif selection in self.owned:
+        if upgrading:
             # Column Names and formatting
             print(f"{'Option':<8}"
                   f"{'Description':<13}"
@@ -207,31 +213,37 @@ class Player:
                 # Prevents entering breaking values:
                 # i.e. More than 4 houses and a hotel
                 # i.e. A number of houses that currently exist on the prop
-                upgrades_to_buy = int(input('Upgrade Option >>> '))
-                if upgrades_to_buy <= board[selection].houses or upgrades_to_buy > 6:
+                upgrades_to_buy = input('Upgrade Option >>> ')
+
+                if upgrades_to_buy in ['N', 'NO', 'E', '']:
+                    print('')
+                    break
+                else:
+                    upgrades_to_buy = int(upgrades_to_buy)
+                    cost = board[selection].upgrade_cost \
+                                * (upgrades_to_buy - board[selection].houses)
+
+                if upgrades_to_buy <= board[selection].houses \
+                        or upgrades_to_buy > 6:
                     print('Select another option. \n')
                 else:
+                    if cost >= self.money:
+                        # Info
+                        print(
+                            f'{self.name} does not have enough money to buy this upgrade. \n')
+
+                    else:
+                        if upgrades_to_buy == 5:
+                            board[selection].hotel = True
+                            self.money -= cost
+                            purchase = 'a hotel'
+
+                        else:
+                            board[selection].houses += upgrades_to_buy
+                            self.money -= cost
+                            purchase = f'{upgrades_to_buy} house(s)'
+
+                        # Info
+                        print(f'{self.name} bought {purchase} for ${cost}.')
+                        print(f"{self.name}'s Money: {self.money} \n")
                     break
-
-            cost = board[selection].upgrade_cost * (upgrades_to_buy - board[selection].houses)
-
-            if cost >= self.money:
-
-                # Info
-                print(f'{self.name} does not have enough money to buy this upgrade.')
-                self.upgrade()
-
-            else:
-                if upgrades_to_buy == 5:
-                    board[selection].hotel = True
-                    self.money -= cost
-                    purchase = 'a hotel'
-
-                else:
-                    board[selection].houses += upgrades_to_buy
-                    self.money -= cost
-                    purchase = f'{upgrades_to_buy} house(s)'
-
-                # Info
-                print(f'{self.name} bought {purchase} for ${cost}.')
-                print(f"{self.name}'s Money: {self.money} \n")
