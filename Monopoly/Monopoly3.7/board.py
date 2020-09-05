@@ -365,6 +365,7 @@ class Jail:
                 bail = input('Pay $50 bail? >>> ')
                 if bail.upper() in ['Y', '1']:
                     player.in_jail = False
+                    player.money -= 50
                     print(f"{player.name} pays bail to leave Jail!")
                     print(f"{player.name}'s Money: {player.money} \n")
                 else:
