@@ -123,6 +123,8 @@ class Chance:
             self.advance(player, card['position'])
         elif card['function'] == 'pay':
             self.pay(player, card['amount'])
+        else:
+            self.get_card(player)
 
     def advance(self, player, to_position):
         if to_position == 'railroad':  # For move to nearest railroad chance
@@ -237,6 +239,10 @@ class Chance:
             player.money += amount
             print(f"{player.name}'s Money: {player.money} \n")
 
+    def get_card(self, player):
+        player.get_out_of_jail_free += 1
+        print(f"{player.name} now has {player.get_out_of_jail_free} Get Out of Jail Free Card(s)! \n")
+
 
 class CommunityChest:
     def __init__(self):
@@ -245,15 +251,14 @@ class CommunityChest:
     def comm_chest(self, player):
         comm_df = pd.read_excel('comm_chest_data.xlsx')
         card = comm_df.iloc[randrange(16)]
-        # card = comm_df.iloc[3]
         print(f"{player.name} drew [{card['number']}] {card['description']}!")
 
         if card['number'] == 0:  # Go to Jail card
             GoToJail().go_to_jail(player)
-        elif card['number'] == 4:  # Get Out of Jail Free card
-            print('This is still in development')
         elif card['function'] == 'pay':
             self.pay(player, card['amount'])
+        else:
+            self.get_card(player)
 
     def pay(self, player, amount):
         from player import PlayerCreation
@@ -292,6 +297,11 @@ class CommunityChest:
         else:
             player.money += amount
             print(f"{player.name}'s Money: {player.money} \n")
+
+    def get_card(self, player):
+        player.get_out_of_jail_free += 1
+        print(
+            f"{player.name} now has {player.get_out_of_jail_free} Get Out of Jail Free Card(s)! \n")
 
 
 class IncomeTax:
@@ -340,15 +350,25 @@ class Jail:
             player.move()
 
         elif player.in_jail >= 1:
+            use_get_out_of_jail_free = False
             print(f"{player.name} has spent {player.in_jail} turn(s) in jail! \n")
 
-            bail = input('Pay $50 bail? >>> ')
-            if bail.upper() in ['Y', '1']:
-                player.in_jail = False
-                print(f"{player.name} pays bail to leave Jail!")
-                print(f"{player.name}'s Money: {player.money} \n")
-            else:
-                self.breakout(player)
+            if player.get_out_of_jail_free:
+                use_card = input(f'Use Get Out of Jail Free Card? ({player.get_out_of_jail_free} Card(s)) >>> ')
+                if use_card.upper() in ['Y', '1']:
+                    player.in_jail = False
+                    use_get_out_of_jail_free = True  # Skips bail option
+                    player.get_out_of_jail_free -= 1
+                    print(f"{player.name} uses a Get Out of Jail Free Card! \n")
+
+            if not use_get_out_of_jail_free:
+                bail = input('Pay $50 bail? >>> ')
+                if bail.upper() in ['Y', '1']:
+                    player.in_jail = False
+                    print(f"{player.name} pays bail to leave Jail!")
+                    print(f"{player.name}'s Money: {player.money} \n")
+                else:
+                    self.breakout(player)
 
             if not player.in_jail:
                 player.move()  # This assumes the player broke out of jail or paid bail

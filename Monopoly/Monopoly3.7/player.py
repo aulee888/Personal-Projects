@@ -32,6 +32,7 @@ class Player:
         self.last_roll = 0  # Used for utility rent
         self.utility_chance_factor = False  # For x10 on Chance card
         self.in_jail = False  # Integer is turns in jail; False is not in jail
+        self.get_out_of_jail_free = 0
 
     def print_owned(self):
         # Column Names and formatting
