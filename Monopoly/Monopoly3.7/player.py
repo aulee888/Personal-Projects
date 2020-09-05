@@ -1,5 +1,5 @@
 from random import randint
-from board import board, railroads, utilities
+from board import board, railroads, utilities, GoToJail
 
 
 class PlayerCreation:
@@ -33,6 +33,7 @@ class Player:
         self.utility_chance_factor = False  # For x10 on Chance card
         self.in_jail = False  # Integer is turns in jail; False is not in jail
         self.get_out_of_jail_free = 0
+        self.speeding = 0
 
     def print_owned(self):
         # Column Names and formatting
@@ -76,7 +77,13 @@ class Player:
         Cheat is used for testing purposes, allows the player to move a desired
         location on the board.
         """
-        if not cheat:
+        if cheat:
+            die1 = die2 = total = 'Cheat'
+
+            self.last_roll = cheat
+            self.position = cheat
+
+        else:
             die1 = randint(1, 6)
             die2 = randint(1, 6)
             total = die1 + die2
@@ -84,14 +91,16 @@ class Player:
             self.last_roll = total
             self.position += total
 
-        else:
-            die1 = die2 = total = 'Cheat'
+            print(f"Roll: {die1} + {die2} = {total}!")
 
-            self.last_roll = cheat
-            self.position = cheat
+            if die1 == die2:
+                self.speeding += 1
+
+                if self.speeding == 3:
+                    print(f"{self.name} is caught speeding!")
+                    GoToJail().go_to_jail(self)
 
         # Info
-        print(f"Roll: {die1} + {die2} = {total}!")
         print(f"{self.name}'s Position: {self.position % 40} "
               f"{board[self.position % 40].name}.")
         print(f"{self.name}'s Money: {self.money} \n")
